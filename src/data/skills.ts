@@ -6,7 +6,7 @@ import {
   FaHtml5,
   FaCss3Alt,
   FaJs,
-  FaNpm
+  FaNpm,
 } from "react-icons/fa";
 
 import {
@@ -20,7 +20,17 @@ import {
   SiPostman,
   SiBun,
   SiDeno,
+  SiGreensock,
+  SiDaisyui ,
+  SiShadcnui ,
+  SiEjs ,
 } from "react-icons/si";
+
+import { BiLogoBlender } from "react-icons/bi";
+
+import { TbBrandRadixUi,TbBrandFramerMotion  } from "react-icons/tb";
+import { RiReactjsLine } from "react-icons/ri";
+import {GiSteamLocomotive } from "react-icons/gi"
 
 export const skills = {
   frontend: {
@@ -33,8 +43,8 @@ export const skills = {
       { name: "Tailwind CSS", icon: SiTailwindcss },
       { name: "HTML5", icon: FaHtml5 },
       { name: "CSS3", icon: FaCss3Alt },
-      { name: "Redux", icon: SiRedux }
-    ]
+      { name: "Redux", icon: SiRedux },
+    ],
   },
 
   backend: {
@@ -44,8 +54,23 @@ export const skills = {
       { name: "Node.js", icon: FaNodeJs },
       { name: "MongoDB", icon: SiMongodb },
       { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "MySQL", icon: SiMysql }
-    ]
+      { name: "MySQL", icon: SiMysql },
+      { name: "EJS", icon: SiEjs  },
+    ],
+  },
+
+  libraries: {
+    title: "Libraries & UI",
+    icon: RiReactjsLine,
+    items: [
+      { name: "shadcn/ui", icon: SiShadcnui },
+      { name: "Radix UI", icon: TbBrandRadixUi },
+      { name: "DaisyUI", icon: SiDaisyui  },
+      { name: "Zustand", icon: SiRedux },
+      { name: "Framer Motion", icon: TbBrandFramerMotion  },
+      { name: "GSAP", icon: SiGreensock },
+      { name: "Locomotive Scroll", icon: GiSteamLocomotive  },
+    ],
   },
 
   tools: {
@@ -58,7 +83,8 @@ export const skills = {
       { name: "npm", icon: FaNpm },
       { name: "Postman", icon: SiPostman },
       { name: "Bun", icon: SiBun },
-      { name: "Deno", icon: SiDeno }
-    ]
-  }
+      { name: "Deno", icon: SiDeno },
+      { name: "Blender", icon: BiLogoBlender },
+    ],
+  },
 };
