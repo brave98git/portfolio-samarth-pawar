@@ -82,9 +82,6 @@ export const skills = {
       { name: "Vite", icon: SiVite },
       { name: "npm", icon: FaNpm },
       { name: "Postman", icon: SiPostman },
-      { name: "Bun", icon: SiBun },
-      { name: "Deno", icon: SiDeno },
-      { name: "Blender", icon: BiLogoBlender },
     ],
   },
 };
