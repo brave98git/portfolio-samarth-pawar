@@ -18,15 +18,12 @@ import {
   SiMysql,
   SiVite,
   SiPostman,
-  SiBun,
-  SiDeno,
   SiGreensock,
   SiDaisyui ,
   SiShadcnui ,
   SiEjs ,
 } from "react-icons/si";
 
-import { BiLogoBlender } from "react-icons/bi";
 
 import { TbBrandRadixUi,TbBrandFramerMotion  } from "react-icons/tb";
 import { RiReactjsLine } from "react-icons/ri";
