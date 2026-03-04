@@ -23,7 +23,7 @@ export const Hero = () => (
         Building smooth, animated & scalable web applications.
       </p>
 
-      <div className="flex gap-6">
+      <div className="flex flex-wrap gap-6">
         {/* GitHub */}
         <a
           href="https://github.com/brave98git"

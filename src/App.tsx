@@ -1,10 +1,10 @@
 import Portfolio from "./pages/Portfolio";
-import CustomCursor from "./components/ui/CustomCursor";
+import BirdCursor from "./components/ui/BirdCursor";
 
 const App = () => {
   return (
     <>
-      <CustomCursor />
+      <BirdCursor />
       <Portfolio />
     </>
   );
