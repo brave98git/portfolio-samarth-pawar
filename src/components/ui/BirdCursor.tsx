@@ -42,7 +42,6 @@ const BirdCursor = () => {
         return () => unsubscribe();
     }, [isMobile, scrollY]);
 
-    // const prevMousePos = useRef({ x: -100, y: -100 });
 
     useEffect(() => {
         // Hide the bird entirely on mobile as requested (touch devices don't have cursors)
