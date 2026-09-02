@@ -10,35 +10,36 @@ const About = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-zinc-500 font-mono text-sm mb-8">01 — About</p>
+          <p className="text-zinc-500 dark:text-zinc-500 font-mono text-sm mb-8">01 — About</p>
 
           <div className="grid md:grid-cols-2 gap-16">
             <div>
-              <h2 className="text-4xl md:text-5xl font-light mb-8">
-                Crafting digital experiences
+              <h2 className="text-4xl md:text-5xl font-light mb-8 text-zinc-900 dark:text-white">
+                Engineering across the stack
               </h2>
-              <p className="text-zinc-400 text-lg leading-relaxed">
-                I specialize in building interactive full-stack web applications
-                with a strong focus on animations and performance. Currently
-                diving deeper into system design and scalable architectures.
+              <p className="text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed mb-6">
+                I’m a full-stack developer and Computer Engineering student with experience building web applications and working with Linux-based software systems.
+              </p>
+              <p className="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed">
+                I enjoy working across the entire lifecycle — from crafting fluid, interactive frontend experiences and architecting robust backend APIs to databases, offline deployments, and system-level tooling.
               </p>
             </div>
 
             <div className="space-y-6">
-              <div className="border-l border-zinc-800 pl-6">
-                <p className="text-sm font-mono text-zinc-600 mb-2">Focus Areas</p>
-                <ul className="space-y-2 text-zinc-400">
-                  <li>• Motion-first UI</li>
-                  <li>• State management</li>
-                  <li>• API & data efficiency</li>
-                  <li>• Full-stack MERN</li>
+              <div className="border-l border-zinc-300 dark:border-zinc-800 pl-6">
+                <p className="text-sm font-mono text-zinc-500 dark:text-zinc-600 mb-2">Focus Areas</p>
+                <ul className="space-y-2 text-zinc-700 dark:text-zinc-400 text-sm">
+                  <li>• Full-Stack Architecture (React, Next.js, Node.js, TypeScript)</li>
+                  <li>• Linux Systems, Bash & Service Management</li>
+                  <li>• API & Backend Engineering (ElysiaJS, Bun, REST, Databases)</li>
+                  <li>• Motion-First & Performance-Driven UI</li>
                 </ul>
               </div>
 
-              <div className="border-l border-zinc-800 pl-6">
-                <p className="text-sm font-mono text-zinc-600 mb-2">Currently</p>
-                <p className="text-zinc-400">
-                  Open to MERN projects and product-focused collaborations.
+              <div className="border-l border-zinc-300 dark:border-zinc-800 pl-6">
+                <p className="text-sm font-mono text-zinc-500 dark:text-zinc-600 mb-2">Status & Focus</p>
+                <p className="text-zinc-700 dark:text-zinc-400 text-sm leading-relaxed">
+                  Working on software engineering & system projects while actively studying AI/ML, System Design, and OS internals.
                 </p>
               </div>
             </div>

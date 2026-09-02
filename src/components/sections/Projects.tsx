@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Lock, Globe } from "lucide-react";
 import { projects } from "../../data/projects";
 
 const Projects = () => {
@@ -15,58 +15,82 @@ const Projects = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-zinc-500 font-mono text-sm mb-8">
-            03 — Projects
+          <p className="text-zinc-500 dark:text-zinc-500 font-mono text-sm mb-8">
+            04 — Projects
           </p>
 
-          <h2 className="text-4xl md:text-5xl font-light mb-16">
+          <h2 className="text-4xl md:text-5xl font-light mb-16 text-zinc-900 dark:text-white">
             Selected Work
           </h2>
 
           <div className="space-y-8">
-            {projects.map((project) => (
-              <a
-                key={project.title}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  group block
-                  border-b border-zinc-900
-                  pb-8
-                  hover:border-zinc-700
-                  transition
-                "
-              >
-                <div className="flex justify-between gap-6">
-                  <div>
-                    <h3 className="text-2xl font-light flex items-center gap-2 group-hover:text-zinc-400 transition-colors">
-                      {project.title}
-                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </h3>
+            {projects.map((project) => {
+              const isExternal = project.link.startsWith("http");
 
-                    <p className="text-zinc-500 text-sm my-4 max-w-3xl">
-                      {project.description}
-                    </p>
+              return (
+                <a
+                  key={project.title}
+                  href={project.link}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  className="
+                    group block
+                    border-b border-zinc-200 dark:border-zinc-900
+                    pb-8
+                    hover:border-zinc-400 dark:hover:border-zinc-700
+                    transition
+                  "
+                >
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-start gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <h3 className="text-2xl font-light flex items-center gap-2 text-zinc-900 group-hover:text-zinc-600 dark:text-white dark:group-hover:text-zinc-300 transition-colors">
+                          {project.title}
+                          {project.isPrivate ? (
+                            <Lock className="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors" />
+                          ) : isExternal && project.link.includes("govlyx.com") ? (
+                            <Globe className="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors" />
+                          ) : (
+                            <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 dark:text-zinc-400" />
+                          )}
+                        </h3>
 
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="text-xs font-mono text-zinc-600 border border-zinc-900 px-3 py-1 rounded-full"
-                        >
-                          {t}
-                        </span>
-                      ))}
+                        {project.tag && (
+                          <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border transition-colors bg-zinc-900 text-white border-zinc-900 dark:bg-white dark:text-black dark:border-white font-medium">
+                            {project.tag}
+                          </span>
+                        )}
+
+                        {project.statusText && (
+                          <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 italic">
+                            ({project.statusText})
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-zinc-600 dark:text-zinc-400 text-sm my-4 max-w-3xl leading-relaxed">
+                        {project.description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {project.tech.map((t) => (
+                          <span
+                            key={t}
+                            className="text-xs font-mono text-zinc-600 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-900 px-3 py-1 rounded-full group-hover:border-zinc-300 dark:group-hover:border-zinc-800 transition"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  <span className="text-sm font-mono text-zinc-600">
-                    {project.year}
-                  </span>
-                </div>
-              </a>
-            ))}
+                    <span className="text-sm font-mono text-zinc-500 dark:text-zinc-600 sm:text-right shrink-0">
+                      {project.year}
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </motion.div>
       </div>

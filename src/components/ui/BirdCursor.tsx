@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useSpring, useScroll, useTransform } from "framer-motion";
+import { useTheme } from "../../context/ThemeContext";
 
 const BirdCursor = () => {
+    const { theme } = useTheme();
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [isMobile, setIsMobile] = useState(false);
     const [rotation, setRotation] = useState(0);
 
-    // Use a very high damping and very low stiffness for a "floaty", "laggy" delay
+    // Spring physics configuration
     const springConfig = { damping: 40, stiffness: 60, mass: 1.5 };
     const birdX = useSpring(-100, springConfig);
     const birdY = useSpring(-100, springConfig);
@@ -14,7 +16,6 @@ const BirdCursor = () => {
     // Mobile scroll config
     const { scrollYProgress, scrollY } = useScroll();
     const mobileY = useTransform(scrollYProgress, [0, 1], ["10vh", "85vh"]);
-    // Smooth out the scroll movement
     const smoothMobileY = useSpring(mobileY, { damping: 20, stiffness: 100 });
 
     const prevScrollY = useRef(0);
@@ -42,9 +43,7 @@ const BirdCursor = () => {
         return () => unsubscribe();
     }, [isMobile, scrollY]);
 
-
     useEffect(() => {
-        // Hide the bird entirely on mobile as requested (touch devices don't have cursors)
         const checkMobile = () => {
             setIsMobile(window.matchMedia("(max-width: 768px)").matches || "ontouchstart" in window);
         };
@@ -65,7 +64,7 @@ const BirdCursor = () => {
         };
     }, [birdX, birdY]);
 
-    // Handle rotation calculating the angle between the lagging bird position and the target mouse position
+    // Handle rotation calculating angle towards target mouse position
     useEffect(() => {
         let animationFrameId: number;
 
@@ -75,12 +74,8 @@ const BirdCursor = () => {
             const dx = mousePos.x - bx;
             const dy = mousePos.y - by;
 
-            // Only adjust rotation if there is a meaningful distance to cover
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance > 5) {
-                // Calculate angle in degrees.
-                // Math.atan2 returns angle in radians from X-axis.
-                // We add 90 degrees because our SVG bird may be drawn facing "up" by default.
                 const angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
                 setRotation(angle);
             }
@@ -99,17 +94,23 @@ const BirdCursor = () => {
         };
     }, [mousePos, birdX, birdY, isMobile]);
 
+    const isLight = theme === "light";
+
     if (isMobile) {
         return (
             <motion.div
-                className="fixed top-0 right-4 w-16 h-16 z-[9999] pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]"
+                className={`fixed top-0 right-4 w-16 h-16 z-[9999] pointer-events-none transition-all ${
+                    isLight
+                        ? "drop-shadow-[0_4px_12px_rgba(0,0,0,0.25)]"
+                        : "drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]"
+                }`}
                 style={{
                     y: smoothMobileY,
                 }}
                 animate={{ rotate: mobileRotation }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
-                <BirdSVG />
+                <BirdSVG isLight={isLight} />
             </motion.div>
         );
     }
@@ -121,7 +122,11 @@ const BirdCursor = () => {
 
     return (
         <motion.div
-            className="fixed top-0 left-0 w-24 h-24 z-[9999] pointer-events-none drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]"
+            className={`fixed top-0 left-0 w-24 h-24 z-[9999] pointer-events-none transition-all ${
+                isLight
+                    ? "drop-shadow-[0_6px_14px_rgba(0,0,0,0.3)]"
+                    : "drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]"
+            }`}
             style={{
                 x: birdX,
                 y: birdY,
@@ -130,75 +135,83 @@ const BirdCursor = () => {
                 rotate: rotation,
             }}
         >
-            <BirdSVG />
+            <BirdSVG isLight={isLight} />
         </motion.div>
     );
 };
 
-// Detailed white flying bird SVG (drawn facing upwards)
-const BirdSVG = () => (
-    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full overflow-visible">
-        {/* Body / Tail */}
-        <path
-            d="M50 20 L40 60 L35 90 L50 80 L65 90 L60 60 Z"
-            fill="#ffffff"
-            stroke="#dddddd"
-            strokeWidth="1"
-        />
+// Flying bird SVG adapting to Light (solid black) and Dark (glowing white) themes
+const BirdSVG = ({ isLight }: { isLight: boolean }) => {
+    const bodyFill = isLight ? "#111111" : "#ffffff";
+    const bodyStroke = isLight ? "#000000" : "#dddddd";
+    const wingFill = isLight ? "#1f1f23" : "#fdfdfd";
+    const wingStroke = isLight ? "#09090b" : "#eeeeee";
+    const tailStroke = isLight ? "#3f3f46" : "#cccccc";
 
-        {/* Head / Beak */}
-        <path
-            d="M48 25 L50 5 L52 25 Z"
-            fill="#ffffff"
-            stroke="#dddddd"
-            strokeWidth="1"
-        />
+    return (
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full overflow-visible transition-colors duration-300">
+            {/* Body / Tail */}
+            <path
+                d="M50 20 L40 60 L35 90 L50 80 L65 90 L60 60 Z"
+                fill={bodyFill}
+                stroke={bodyStroke}
+                strokeWidth="1.2"
+            />
 
-        {/* Left Wing */}
-        <motion.path
-            d="M40 40 Q20 30 5 15 Q15 60 40 60 Z"
-            fill="#fdfdfd"
-            stroke="#eeeeee"
-            strokeWidth="1"
-            // Flapping animation
-            animate={{
-                d: [
-                    "M40 40 Q20 30 5 15 Q15 60 40 60 Z", // Up
-                    "M40 40 Q20 40 10 50 Q15 60 40 60 Z", // Down
-                    "M40 40 Q20 30 5 15 Q15 60 40 60 Z"  // Up
-                ]
-            }}
-            transition={{
-                repeat: Infinity,
-                duration: 0.6,
-                ease: "easeInOut"
-            }}
-        />
+            {/* Head / Beak */}
+            <path
+                d="M48 25 L50 5 L52 25 Z"
+                fill={bodyFill}
+                stroke={bodyStroke}
+                strokeWidth="1.2"
+            />
 
-        {/* Right Wing */}
-        <motion.path
-            d="M60 40 Q80 30 95 15 Q85 60 60 60 Z"
-            fill="#fdfdfd"
-            stroke="#eeeeee"
-            strokeWidth="1"
-            // Flapping animation mirrored
-            animate={{
-                d: [
-                    "M60 40 Q80 30 95 15 Q85 60 60 60 Z", // Up
-                    "M60 40 Q80 40 90 50 Q85 60 60 60 Z", // Down
-                    "M60 40 Q80 30 95 15 Q85 60 60 60 Z"  // Up
-                ]
-            }}
-            transition={{
-                repeat: Infinity,
-                duration: 0.6,
-                ease: "easeInOut"
-            }}
-        />
+            {/* Left Wing */}
+            <motion.path
+                d="M40 40 Q20 30 5 15 Q15 60 40 60 Z"
+                fill={wingFill}
+                stroke={wingStroke}
+                strokeWidth="1.2"
+                // Flapping animation
+                animate={{
+                    d: [
+                        "M40 40 Q20 30 5 15 Q15 60 40 60 Z", // Up
+                        "M40 40 Q20 40 10 50 Q15 60 40 60 Z", // Down
+                        "M40 40 Q20 30 5 15 Q15 60 40 60 Z"  // Up
+                    ]
+                }}
+                transition={{
+                    repeat: Infinity,
+                    duration: 0.6,
+                    ease: "easeInOut"
+                }}
+            />
 
-        {/* Detail lines on tail */}
-        <path d="M45 75 L42 85 M50 78 L50 90 M55 75 L58 85" stroke="#cccccc" strokeWidth="1" />
-    </svg>
-);
+            {/* Right Wing */}
+            <motion.path
+                d="M60 40 Q80 30 95 15 Q85 60 60 60 Z"
+                fill={wingFill}
+                stroke={wingStroke}
+                strokeWidth="1.2"
+                // Flapping animation mirrored
+                animate={{
+                    d: [
+                        "M60 40 Q80 30 95 15 Q85 60 60 60 Z", // Up
+                        "M60 40 Q80 40 90 50 Q85 60 60 60 Z", // Down
+                        "M60 40 Q80 30 95 15 Q85 60 60 60 Z"  // Up
+                    ]
+                }}
+                transition={{
+                    repeat: Infinity,
+                    duration: 0.6,
+                    ease: "easeInOut"
+                }}
+            />
+
+            {/* Detail lines on tail */}
+            <path d="M45 75 L42 85 M50 78 L50 90 M55 75 L58 85" stroke={tailStroke} strokeWidth="1" />
+        </svg>
+    );
+};
 
 export default BirdCursor;
