@@ -28,11 +28,23 @@ const About = () => {
             <div className="space-y-6">
               <div className="border-l border-zinc-300 dark:border-zinc-800 pl-6">
                 <p className="text-sm font-mono text-zinc-500 dark:text-zinc-600 mb-2">Focus Areas</p>
-                <ul className="space-y-2 text-zinc-700 dark:text-zinc-400 text-sm">
-                  <li>• Full-Stack Architecture (React, Next.js, Node.js, TypeScript)</li>
-                  <li>• Linux Systems, Bash & Service Management</li>
-                  <li>• API & Backend Engineering (ElysiaJS, Bun, REST, Databases)</li>
-                  <li>• Motion-First & Performance-Driven UI</li>
+                <ul className="space-y-2.5 text-zinc-700 dark:text-zinc-400 text-sm">
+                  <li className="flex items-start gap-2.5">
+                    <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500 font-medium select-none shrink-0 mt-0.5">01.</span>
+                    <span>Full-Stack Architecture (React, Next.js, Node.js, TypeScript)</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500 font-medium select-none shrink-0 mt-0.5">02.</span>
+                    <span>Linux Systems, Bash & Service Management</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500 font-medium select-none shrink-0 mt-0.5">03.</span>
+                    <span>API & Backend Engineering (ElysiaJS, Bun, REST, Databases)</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500 font-medium select-none shrink-0 mt-0.5">04.</span>
+                    <span>Motion-First & Performance-Driven UI</span>
+                  </li>
                 </ul>
               </div>
 

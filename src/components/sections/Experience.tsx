@@ -1,6 +1,53 @@
 import { motion } from "framer-motion";
 import { Briefcase, Calendar, Terminal } from "lucide-react";
-import { experiences } from "../../data/experience";
+import { experiences, type ExperienceItem } from "../../data/experience";
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+function formatExperiencePeriod(exp: ExperienceItem): string {
+  if (!exp.startDate) {
+    return exp.period || "";
+  }
+
+  const [startYearStr, startMonthStr] = exp.startDate.split("-");
+  const startYear = parseInt(startYearStr, 10);
+  const startMonthIdx = parseInt(startMonthStr, 10) - 1;
+  const startLabel = `${MONTH_NAMES[startMonthIdx]} ${startYear}`;
+
+  const now = new Date();
+  let endYear = now.getFullYear();
+  let endMonthIdx = now.getMonth();
+  let endLabel = "Present";
+
+  if (exp.endDate) {
+    const [endYearStr, endMonthParsed] = exp.endDate.split("-");
+    endYear = parseInt(endYearStr, 10);
+    endMonthIdx = parseInt(endMonthParsed, 10) - 1;
+    endLabel = `${MONTH_NAMES[endMonthIdx]} ${endYear}`;
+  }
+
+  // Calculate inclusive month duration
+  let totalMonths = (endYear - startYear) * 12 + (endMonthIdx - startMonthIdx) + 1;
+  if (totalMonths <= 0) totalMonths = 1;
+
+  const years = Math.floor(totalMonths / 12);
+  const remainingMonths = totalMonths % 12;
+
+  const durationParts: string[] = [];
+  if (years > 0) {
+    durationParts.push(`${years} ${years === 1 ? "year" : "years"}`);
+  }
+  if (remainingMonths > 0) {
+    durationParts.push(`${remainingMonths} ${remainingMonths === 1 ? "month" : "months"}`);
+  }
+
+  const durationStr = durationParts.join(" ");
+
+  return `${startLabel} – ${endLabel}${durationStr ? ` (${durationStr})` : ""}`;
+}
 
 const Experience = () => {
   return (
@@ -29,13 +76,22 @@ const Experience = () => {
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-zinc-200 dark:border-zinc-900 pb-6">
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="p-2 rounded bg-zinc-100 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
-                        <Briefcase className="w-5 h-5" />
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <span className="font-mono text-xs text-zinc-500 dark:text-zinc-500 font-semibold px-2 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60">
+                        {String(idx + 1).padStart(2, "0")}
+                      </span>
+                      <span className="p-1.5 rounded bg-zinc-100 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
+                        <Briefcase className="w-4 h-4" />
                       </span>
                       <h3 className="text-2xl font-light text-zinc-900 dark:text-white">
                         {exp.role}
                       </h3>
+                      {exp.isCurrent && (
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                          Active
+                        </span>
+                      )}
                     </div>
                     <p className="text-zinc-600 dark:text-zinc-400 font-mono text-sm">
                       {exp.company} <span className="text-zinc-400 dark:text-zinc-600">·</span>{" "}
@@ -45,7 +101,7 @@ const Experience = () => {
 
                   <div className="flex items-center gap-2 text-zinc-500 font-mono text-sm">
                     <Calendar className="w-4 h-4" />
-                    <span>{exp.period}</span>
+                    <span>{formatExperiencePeriod(exp)}</span>
                   </div>
                 </div>
 
@@ -63,7 +119,9 @@ const Experience = () => {
                         key={bIdx}
                         className="text-zinc-700 dark:text-zinc-300 text-sm leading-relaxed flex items-start gap-3"
                       >
-                        <span className="text-zinc-400 dark:text-zinc-600 mt-1">▹</span>
+                        <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500 mt-0.5 select-none shrink-0 font-medium">
+                          {String(bIdx + 1).padStart(2, "0")}.
+                        </span>
                         <span>{bullet}</span>
                       </li>
                     ))}

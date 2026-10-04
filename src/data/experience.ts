@@ -3,7 +3,10 @@ export interface ExperienceItem {
   company: string;
   location?: string;
   type: string;
-  period: string;
+  startDate?: string; // YYYY-MM format, e.g. "2026-06"
+  endDate?: string;   // YYYY-MM format or undefined for Present
+  isCurrent?: boolean;
+  period?: string;    // Fallback or override
   description: string;
   highlights: string[];
   technologies: string[];
@@ -14,7 +17,8 @@ export const experiences: ExperienceItem[] = [
     role: "Full Stack Engineer Intern",
     company: "Assertion Inc.",
     type: "Internship",
-    period: "June 2026 – Present (3 mos)",
+    startDate: "2026-06",
+    isCurrent: true,
     description:
       "Developing production telephony systems, voice synthesis integrations, backend API pipelines, and Linux service infrastructure.",
     highlights: [
